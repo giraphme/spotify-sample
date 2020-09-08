@@ -21,8 +21,6 @@ const IndexPage = () => {
           {!accessToken && <a href="/api/auth/spotify">login with spotify</a>}
           {accessToken && (
             <>
-              <p>logged in to spotify</p>
-              <br />
               <a href="/api/auth/spotify">re-login with spotify</a>
               <SpotifyResults accessToken={accessToken} />
             </>
