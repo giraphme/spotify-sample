@@ -1,6 +1,6 @@
 const IndexPage = () => (
   <>
-    <a href="/auth/spotify">login with spotify</a>
+    <a href="/api/auth/spotify">login with spotify</a>
   </>
 );
 
