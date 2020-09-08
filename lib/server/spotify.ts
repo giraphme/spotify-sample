@@ -1,12 +1,5 @@
 import qs from "qs";
-
-export type SpotifyAccessToken = {
-  accessToken: string;
-  tokenType: string;
-  scope: string;
-  expiresIn: number;
-  refreshToken: string;
-};
+import { SpotifyAccessToken } from "../public/spotify";
 
 type RawSpotifyAccessToken = {
   access_token: string; // An access token that can be provided in subsequent calls, for example to Spotify Web API services.
@@ -16,7 +9,7 @@ type RawSpotifyAccessToken = {
   refresh_token: string; // A token that can be sent to the Spotify Accounts service in place of an authorization code. (When the access code expires, send a POST request to the Accounts service /api/token endpoint, but use this code in place of an authorization code. A new access token will be returned. A new refresh token might be returned too.)
 };
 
-const authCallbackUrl = `${process.env.HOST_BASE_URL}/api/callbacks/spotify`;
+const authCallbackUrl = `${process.env.HOST_BASE_URL}/callbacks/spotify`;
 
 export const makeAuthUrl = () => {
   const queries = {
