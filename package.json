@@ -8,7 +8,9 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@types/qs": "^6.9.4",
     "next": "latest",
+    "qs": "^6.9.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
