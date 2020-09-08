@@ -1,11 +1,12 @@
 import { SpotifyAccessToken } from "@/lib/public/spotify";
 import { useState, useEffect } from "react";
+import { ApiResponseRow } from "./ApiResponseRow";
 
 type Props = {
   accessToken: SpotifyAccessToken;
 };
 
-type SpotifyResponseInfo = {
+export type SpotifyResponseInfo = {
   title: string;
   description: React.ReactNode;
   link: string;
@@ -15,23 +16,27 @@ type SpotifyResponseInfo = {
 };
 
 export const SpotifyResults: React.FC<Props> = ({ accessToken }) => {
+  const [loading, setLoading] = useState(true);
   const [responses, setResponses] = useState<SpotifyResponseInfo[]>([]);
 
   useEffect(() => {
-    callApis(accessToken).then(setResponses);
+    callApis(accessToken).then((r) => {
+      setLoading(false);
+      setResponses(r);
+    });
   }, []);
 
   return (
     <>
-      {responses.map(({ title, description, url, link, data }) => (
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <>
-          <h2>{title}</h2>
-          <p>{description}</p>
-          <p>{url}</p>
-          <p>{link}</p>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
+          {responses.map((response) => (
+            <ApiResponseRow {...response} />
+          ))}
         </>
-      ))}
+      )}
     </>
   );
 };
@@ -63,7 +68,7 @@ const asyncGen = async function* (
   urls: [string, string, React.ReactNode, string, SpotifyAccessToken][]
 ) {
   for (const url of urls) {
-    await sleep(1000);
+    await sleep(500);
     yield await fetchToSpotify(...url);
   }
 };
@@ -93,7 +98,15 @@ const callApis = async (accessToken: SpotifyAccessToken) => {
     [
       "me/following/contains?ids=3z8diLlUCkN1j9N9ZdnfBJ&type=artist",
       "特定のアーティストやユーザーをフォローしているか",
-      "https://open.spotify.com/artist/3z8diLlUCkN1j9N9ZdnfBJ",
+      <>
+        指定中のアーティスト:{" "}
+        <a
+          href="https://open.spotify.com/artist/3z8diLlUCkN1j9N9ZdnfBJ"
+          target="_blank"
+        >
+          https://open.spotify.com/artist/3z8diLlUCkN1j9N9ZdnfBJ
+        </a>
+      </>,
       "https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/",
       accessToken,
     ],
@@ -105,9 +118,32 @@ const callApis = async (accessToken: SpotifyAccessToken) => {
       accessToken,
     ],
     [
+      "me/albums/contains?ids=59iTZa7NEIzDyoKvNjZDin",
+      "ユーザーが特定のアルバムを保存しているか",
+      <>
+        指定中のアルバム:{" "}
+        <a
+          href="https://open.spotify.com/album/4TnRXzfReekKIwLJ0reFvA"
+          target="_blank"
+        >
+          https://open.spotify.com/album/4TnRXzfReekKIwLJ0reFvA
+        </a>
+      </>,
+      "https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-tracks/",
+      accessToken,
+    ],
+    [
       "me/tracks/contains?ids=59iTZa7NEIzDyoKvNjZDin",
       "ユーザーが特定の曲を保存しているか",
-      "https://open.spotify.com/album/4TnRXzfReekKIwLJ0reFvA?highlight=spotify:track:59iTZa7NEIzDyoKvNjZDin",
+      <>
+        指定中の曲:{" "}
+        <a
+          href="https://open.spotify.com/album/4TnRXzfReekKIwLJ0reFvA?highlight=spotify:track:59iTZa7NEIzDyoKvNjZDin"
+          target="_blank"
+        >
+          https://open.spotify.com/album/4TnRXzfReekKIwLJ0reFvA?highlight=spotify:track:59iTZa7NEIzDyoKvNjZDin
+        </a>
+      </>,
       "https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-tracks/",
       accessToken,
     ],
