@@ -15,7 +15,19 @@ export const makeAuthUrl = () => {
   const queries = {
     response_type: "code",
     client_id: process.env.SPOTIFY_CLIENT_ID,
-    scope: "user-read-private user-read-email",
+    scope: [
+      "user-read-playback-state",
+      "user-read-currently-playing",
+      "user-read-email",
+      "user-read-private",
+      "playlist-read-collaborative",
+      "playlist-read-private",
+      "user-library-read",
+      "user-top-read",
+      "user-read-playback-position",
+      "user-read-recently-played",
+      "user-follow-read",
+    ].join(" "),
     redirect_uri: authCallbackUrl,
   };
 

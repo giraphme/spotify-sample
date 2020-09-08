@@ -14,6 +14,7 @@ const CallbackSpotify: NextPage = () => {
 
   useEffect(() => {
     const code = router.query.code;
+
     fetch(`/api/callbacks/spotify?${qs.stringify({ code })}`).then(
       async (response) => {
         const data = await response.json();
@@ -21,7 +22,7 @@ const CallbackSpotify: NextPage = () => {
         router.replace("/");
       }
     );
-  });
+  }, []);
 
   return <>redirecting...</>;
 };
